@@ -1,0 +1,20 @@
+{
+  "name": "contact-book",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+     "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alaa872003/Contact-Book.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alaa872003/Contact-Book/issues"
+  },
+  "homepage": "https://github.com/alaa872003/Contact-Book#readme",
+  "description": ""
+}
