@@ -1,17 +1,34 @@
 
 const readline = require("readline/promises");
+
 // readline interface
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
+const contacts=[]
+let id=1;
+
 // Add Contact
-function addContact(){
+async function addContact(){
     console.log(`in add function`);
+    let contact={};
+    contact.id=id;
+    id++;
+    console.log("Enter new Contact");
     
-    
+    const name=await rl.question('Enter name :');
+    const email=await rl.question('Enter email :');
+    const phone=await rl.question('Enter phone :');
+    contact.name=name;
+    contact.email=email;
+    contact.phone=phone;
+
+    contacts.push(contact);
+    console.log(contacts);
 }
+
 
 // Remove Contact
 function removeContact(){
@@ -38,10 +55,10 @@ function searchContact(){
 
 }
 
-function crud(num){
+async function crud(num){
     switch(num){
         case 1:
-            addContact();
+            await addContact();
             break;
         case 2:
             removeContact();
@@ -79,7 +96,7 @@ async function run() {
     let answer = await rl.question("Choose an operation: ");
     let num = Number(answer);
 
-    crud(num);
+    await crud(num);
 
     choice = await rl.question(
         "Do you want to do another operation? (yes/no): "
