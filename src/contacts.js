@@ -58,8 +58,9 @@ async function updateContact(){
 
 // List Contacts
 function listContacts(){
-    console.log(`in list function`);
-
+    contacts.forEach(c => {
+        console.log(`contact ${c.id}:( ${c.name} , ${c.email} , ${c.phone})`);        
+    });
 }
 
 // Search Contact
