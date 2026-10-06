@@ -33,13 +33,26 @@ async function addContact(){
 // Remove Contact
 function removeContact(){
     console.log(`in remove function`);
-
+    
 }
 
 // Update Contact
-function updateContact(){
+async function updateContact(){
     console.log(`in update function`);
-
+    const id= await rl.question('Enter the id of Contact:');
+    let contact=contacts.find((c)=>c.id==id);
+    if(!contact){
+        console.log( "there isn't contact with this id..");
+        return;
+    }
+    let newName=await rl.question('Enter new name:') || contact.name;
+    let newEmail=await rl.question('Enter new email:') ||contact.email;
+    let newPhone=await rl.question('Enter new phone:') ||contact.phone;
+    contact.name=newName;
+    contact.email=newEmail;
+    contact.phone=newPhone;
+    console.log(contacts);
+    
 }
 
 // List Contacts
@@ -64,7 +77,7 @@ async function crud(num){
             removeContact();
             break;
         case 3:
-            updateContact();
+            await updateContact();
             break;
         case 4:
             listContacts();
