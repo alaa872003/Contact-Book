@@ -64,8 +64,16 @@ function listContacts(){
 }
 
 // Search Contact
-function searchContact(){
-    console.log(`in search function`);
+async function searchContact(){
+    const id = await rl.question('Enter the id of Contact: ');
+    let contact =contacts.find((c)=>c.id==id);
+    if(!contact){
+        console.log("not found");
+        return;
+        
+    }
+    console.log(`contact: `,contact);
+
 
 
 }
@@ -85,7 +93,7 @@ async function crud(num){
             listContacts();
             break;
         case 5:
-            searchContact();
+            await searchContact();
             break;
         default:
             break;
