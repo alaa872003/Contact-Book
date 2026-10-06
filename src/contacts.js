@@ -7,12 +7,11 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-const contacts=[]
+let contacts=[]
 let id=1;
 
 // Add Contact
 async function addContact(){
-    console.log(`in add function`);
     let contact={};
     contact.id=id;
     id++;
@@ -31,14 +30,16 @@ async function addContact(){
 
 
 // Remove Contact
-function removeContact(){
-    console.log(`in remove function`);
+async function removeContact(){
+    const id = await rl.question('Enter the id of Contact: ');
+    contacts =contacts.filter((c)=>c.id!=id);
+    console.log(`Contacts after delete: `,contacts);
+
     
 }
 
 // Update Contact
 async function updateContact(){
-    console.log(`in update function`);
     const id= await rl.question('Enter the id of Contact:');
     let contact=contacts.find((c)=>c.id==id);
     if(!contact){
@@ -74,7 +75,7 @@ async function crud(num){
             await addContact();
             break;
         case 2:
-            removeContact();
+            await removeContact();
             break;
         case 3:
             await updateContact();
