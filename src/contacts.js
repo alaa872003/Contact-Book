@@ -90,17 +90,35 @@ function listContacts(){
 // Search Contact
 async function searchContact(){
     const id = await rl.question('Enter the id of Contact: ');
-    let contact =contacts.find((c)=>c.id==id);
+    let contact =cachedSearch(id);
     if(!contact){
         console.log("not found");
         return;
         
     }
     console.log(`contact: `,contact);
-
-
-
+    
+    
+    
 }
+
+// Search Contact in cache
+
+function searchContactCache(){
+    const cache = new Map();
+    return function(id){
+        if(cache.has(id)){
+            console.log("Found in cache");
+            return cache.get(id);
+        }
+
+        const contact =contacts.find((c)=>c.id==id);
+        cache.set(id,contact);
+        return contact;
+    }
+}
+
+const cachedSearch=searchContactCache();
 
 async function crud(num){
     switch(num){
