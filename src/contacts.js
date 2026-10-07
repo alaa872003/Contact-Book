@@ -109,11 +109,28 @@ function searchContactCache(){
     return function(id){
         if(cache.has(id)){
             console.log("Found in cache");
-            return cache.get(id);
+            const contact =cache.get(id);
+            cache.delete(id);
+            cache.set(id,contact);
+            return contact;
         }
 
         const contact =contacts.find((c)=>c.id==id);
-        cache.set(id,contact);
+        // Keep the 3 most recently searched contacts in the cache
+        if(contact){
+            if(cache.size<3){
+                cache.set(id,contact);
+            }else{
+                const firstId = cache.keys().next().value;
+                cache.delete(firstId);
+                cache.set(id,contact);
+            }
+        }else{
+            console.log("Not Found");
+            
+        }
+        console.log("cache :",cache);
+        
         return contact;
     }
 }
