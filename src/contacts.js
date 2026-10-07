@@ -10,6 +10,11 @@ const rl = readline.createInterface({
 let contacts=[]
 let id=1;
 
+// emails set
+let emails=new Set();
+// phones set
+let phones=new Set();
+
 // Add Contact
 async function addContact(){
     let contact={};
@@ -20,19 +25,29 @@ async function addContact(){
     const name=await rl.question('Enter name :');
     const email=await rl.question('Enter email :');
     const phone=await rl.question('Enter phone :');
-    contact.name=name;
-    contact.email=email;
-    contact.phone=phone;
+    if(emails.has(email) || phones.has(phone)){
+        console.log("The email or phone already exists"); 
+    }else{
+        contact.name=name;
+        contact.email=email;
+        emails.add(contact.email);
+        contact.phone=phone;
+        phones.add(contact.phone);
+        contacts.push(contact);
+    }
 
-    contacts.push(contact);
     console.log(contacts);
 }
 
 
 // Remove Contact
 async function removeContact(){
-    const id = await rl.question('Enter the id of Contact: ');
-    contacts =contacts.filter((c)=>c.id!=id);
+    const id = await rl.question('Enter the id of Contact: ');    
+    contacts =contacts.filter((c)=>{if(c.id==id){
+        emails.delete(c.email);
+        phones.delete(c.phone);
+    }return c.id!=id});
+
     console.log(`Contacts after delete: `,contacts);
 
     
@@ -49,9 +64,18 @@ async function updateContact(){
     let newName=await rl.question('Enter new name:') || contact.name;
     let newEmail=await rl.question('Enter new email:') ||contact.email;
     let newPhone=await rl.question('Enter new phone:') ||contact.phone;
-    contact.name=newName;
-    contact.email=newEmail;
-    contact.phone=newPhone;
+    if(!emails.has(newEmail) && !phones.has(newPhone)){
+        contact.name=newName;
+        emails.delete(contact.email);
+        contact.email=newEmail;
+        emails.add(contact.email);
+        phones.delete(contact.phone);
+        contact.phone=newPhone;
+        phones.add(contact.phone);
+    }else{
+        console.log("the email or phone already exits"); 
+    }
+   
     console.log(contacts);
     
 }
