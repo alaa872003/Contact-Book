@@ -15,25 +15,42 @@ let emails=new Set();
 // phones set
 let phones=new Set();
 
+// Email regular Exprission for email validation
+let emailExp=/^\w+@\w+\.\w{3}$/
+// Phone regular Exprission for Egyptian Number validation
+let phoneExp=/^\+201[0125]\d{8}$/
+
 // Add Contact
 async function addContact(){
     let contact={};
     contact.id=id;
-    id++;
+    
     console.log("Enter new Contact");
     
     const name=await rl.question('Enter name :');
-    const email=await rl.question('Enter email :');
-    const phone=await rl.question('Enter phone :');
+    const email=(await rl.question('Enter email :'));
+    const phone=(await rl.question('Enter phone :'));
+    // Email validation
+    if(!emailExp.test(email)){
+        console.log("invalid email");
+        return;
+    }
+    // phone validation
+    if(!phoneExp.test(phone)){
+        console.log("invalid phone");
+        return;
+    }
     if(emails.has(email) || phones.has(phone)){
         console.log("The email or phone already exists"); 
     }else{
+
         contact.name=name;
         contact.email=email;
         emails.add(contact.email);
         contact.phone=phone;
         phones.add(contact.phone);
         contacts.push(contact);
+        id++;
     }
 
     console.log(contacts);
@@ -64,19 +81,42 @@ async function updateContact(){
     let newName=await rl.question('Enter new name:') || contact.name;
     let newEmail=await rl.question('Enter new email:') ||contact.email;
     let newPhone=await rl.question('Enter new phone:') ||contact.phone;
-    if(!emails.has(newEmail) && !phones.has(newPhone)){
-        contact.name=newName;
-        emails.delete(contact.email);
-        contact.email=newEmail;
-        emails.add(contact.email);
-        phones.delete(contact.phone);
-        contact.phone=newPhone;
-        phones.add(contact.phone);
-    }else{
-        console.log("the email or phone already exits"); 
+    // Email validation
+    if(!emailExp.test(newEmail)){
+        console.log("invalid email");
+        return;
     }
-   
-    console.log(contacts);
+    // phone validation
+    if(!phoneExp.test(newPhone)){
+        console.log("invalid phone");
+        return;
+    }
+
+if (newEmail !== contact.email && emails.has(newEmail)) {
+    console.log("The email already exists");
+    return;
+}
+
+if (newPhone !== contact.phone && phones.has(newPhone)) {
+    console.log("The phone already exists");
+    return;
+}
+
+if (newEmail !== contact.email) {
+    emails.delete(contact.email);
+    emails.add(newEmail);
+    contact.email = newEmail;
+}
+
+if (newPhone !== contact.phone) {
+    phones.delete(contact.phone);
+    phones.add(newPhone);
+    contact.phone = newPhone;
+}
+
+contact.name = newName;
+
+console.log(contacts);
     
 }
 
